@@ -7,7 +7,6 @@ import './globals.css'
 export const metadata: Metadata = {
   title: 'Arun Saravanan S - Portfolio',
   description: 'Portfolio of Arun Saravanan S - Web Developer & Designer',
-  generator: 'v0.app',
   icons: {
     icon: '/favicon.png',
     shortcut: '/favicon.png',
