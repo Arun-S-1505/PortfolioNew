@@ -9,7 +9,6 @@ import SkillsSection from "@/components/skills-section"
 import ContactSection from "@/components/contact-section"
 import Footer from "@/components/footer"
 import BackToTop from "@/components/back-to-top"
-import ThemeToggle from "@/components/theme-toggle"
 
 export default function Portfolio() {
   const [mounted, setMounted] = useState(false)
@@ -24,19 +23,17 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
-      <ThemeToggle />
-
-      <main>
-        <HeroSection />
-        <AboutSection />
-        <ProjectsSection />
-        <SkillsSection />
-        <ContactSection />
-      </main>
-
-      <Footer />
-      <BackToTop />
+      <div className="pt-16" style={{ width: '100vw', overflowX: 'hidden', position: 'relative' }}>
+        <main>
+          <HeroSection />
+          <AboutSection />
+          <ProjectsSection />
+          <SkillsSection />
+          <ContactSection />
+        </main>
+        <Footer />
+        <BackToTop />
+      </div>
     </div>
   )
 }
