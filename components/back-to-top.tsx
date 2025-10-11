@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
 import { ChevronUp } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -29,23 +28,20 @@ export default function BackToTop() {
   }
 
   return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.5 }}
-          className="fixed bottom-8 right-8 z-50"
-        >
-          <Button
-            onClick={scrollToTop}
-            size="icon"
-            className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-blue-600 hover:from-blue-600 hover:to-purple-600 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse-glow"
-          >
-            <ChevronUp size={20} />
-          </Button>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div
+      className={`fixed bottom-8 right-8 z-50 transition-all duration-300 ${
+        isVisible
+          ? "opacity-100 scale-100 translate-y-0"
+          : "opacity-0 scale-50 translate-y-4 pointer-events-none"
+      }`}
+    >
+      <Button
+        onClick={scrollToTop}
+        size="icon"
+        className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-blue-600 hover:from-blue-600 hover:to-purple-600 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse-glow"
+      >
+        <ChevronUp size={20} />
+      </Button>
+    </div>
   )
 }

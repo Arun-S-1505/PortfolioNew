@@ -7,25 +7,49 @@ export default function LoadingScreen() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Simulate loading progress
-    const progressInterval = setInterval(() => {
+    let progressInterval: NodeJS.Timeout;
+    let hideTimer: NodeJS.Timeout;
+
+    // Start progress animation
+    progressInterval = setInterval(() => {
       setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          return 100;
+        if (prev >= 95) { // Don't reach 100 until page actually loads
+          return prev;
         }
-        return prev + Math.random() * 15;
+        return prev + Math.random() * 10;
       });
     }, 100);
 
-    // Hide loading screen after animation completes
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2500);
+    // Function to hide loading screen
+    const hideLoadingScreen = () => {
+      clearInterval(progressInterval);
+      setProgress(100);
+      hideTimer = setTimeout(() => {
+        setIsLoading(false);
+      }, 500); // Small delay after reaching 100%
+    };
+
+    // Check if page is already loaded
+    if (document.readyState === 'complete') {
+      hideLoadingScreen();
+    } else {
+      // Wait for page to fully load
+      const handleLoad = () => {
+        hideLoadingScreen();
+      };
+
+      window.addEventListener('load', handleLoad);
+
+      return () => {
+        window.removeEventListener('load', handleLoad);
+        clearInterval(progressInterval);
+        if (hideTimer) clearTimeout(hideTimer);
+      };
+    }
 
     return () => {
-      clearTimeout(timer);
       clearInterval(progressInterval);
+      if (hideTimer) clearTimeout(hideTimer);
     };
   }, []);
 

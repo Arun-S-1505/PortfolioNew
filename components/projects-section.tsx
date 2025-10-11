@@ -1,8 +1,6 @@
-"use client"
+﻿"use client"
 
-import { motion } from "framer-motion"
-import { useInView } from "framer-motion"
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ExternalLink, Github, Eye } from "lucide-react"
@@ -41,22 +39,37 @@ const projects = [
     githubUrl: "https://github.com/Arun-S-1505/Portfolio.git",
     featured: false,
   },
-
 ]
 
 export default function ProjectsSection() {
   const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
   const [hoveredProject, setHoveredProject] = useState<number | null>(null)
+  const [isVisible, setIsVisible] = useState(false)
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+        }
+      },
+      { threshold: 0.1, rootMargin: "-100px" }
+    )
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
 
   return (
     <section id="projects" className="py-16" ref={ref}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-12"
+        <div
+          className={`text-center mb-12 transition-all duration-800 ${
+            isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-12"
+          }`}
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent leading-relaxed pb-2">
             Featured Projects
@@ -64,37 +77,37 @@ export default function ProjectsSection() {
           <p className="text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto px-4 sm:px-0 pb-1">
             A showcase of my recent work and creative solutions
           </p>
-        </motion.div>
+        </div>
 
         <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {projects.map((project, index) => (
-            <motion.div
+            <div
               key={project.id}
-              initial={{ opacity: 0, y: 50 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              onHoverStart={() => setHoveredProject(project.id)}
-              onHoverEnd={() => setHoveredProject(null)}
-              className={`${project.featured ? "md:col-span-2 lg:col-span-1" : ""}`}
+              className={`${project.featured ? "md:col-span-2 lg:col-span-1" : ""} transition-all duration-600 ${
+                isVisible
+                  ? "animate-fade-in-up opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-12"
+              }`}
+              style={{ animationDelay: isVisible ? `${index * 0.1}s` : "0s" }}
+              onMouseEnter={() => setHoveredProject(project.id)}
+              onMouseLeave={() => setHoveredProject(null)}
             >
               <Card className="group overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 glass">
                 <div className="relative overflow-hidden">
-                  <motion.img
+                  <img
                     src={project.image}
                     alt={project.title}
                     className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
-                    whileHover={{ scale: 1.05 }}
                   />
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: hoveredProject === project.id ? 1 : 0 }}
-                    className="absolute inset-0 bg-black/60 flex items-center justify-center space-x-4"
+                  <div
+                    className={`absolute inset-0 bg-black/60 flex items-center justify-center space-x-4 transition-opacity duration-300 ${
+                      hoveredProject === project.id ? "opacity-100" : "opacity-0"
+                    }`}
                   >
                     <a
                       href={project.liveUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className=""
                     >
                       <Button size="sm" variant="secondary" className="glass">
                         <Eye size={16} className="mr-2" />
@@ -105,19 +118,22 @@ export default function ProjectsSection() {
                       href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className=""
                     >
                       <Button size="sm" variant="secondary" className="glass">
                         <Github size={16} className="mr-2" />
                         Code
                       </Button>
                     </a>
-                  </motion.div>
+                  </div>
                 </div>
 
                 <CardContent className="p-4 sm:p-6">
-                  <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 group-hover:text-primary transition-colors">{project.title}</h3>
-                  <p className="text-muted-foreground mb-3 sm:mb-4 text-sm leading-relaxed">{project.description}</p>
+                  <h3 className="text-lg sm:text-xl font-bold mb-2 sm:mb-3 group-hover:text-primary transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-muted-foreground mb-3 sm:mb-4 text-sm leading-relaxed">
+                    {project.description}
+                  </p>
 
                   <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3 sm:mb-4">
                     {project.technologies.map((tech) => (
@@ -155,20 +171,19 @@ export default function ProjectsSection() {
                   </div>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           ))}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="text-center mt-12"
+        <div
+          className={`text-center mt-12 transition-all duration-800 delay-800 ${
+            isVisible ? "animate-fade-in-up opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+          }`}
         >
           <Button variant="outline" size="lg" className="px-8 bg-transparent">
             View All Projects
           </Button>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

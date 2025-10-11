@@ -2,9 +2,7 @@
 
 import type React from "react"
 
-import { motion } from "framer-motion"
-import { useInView } from "framer-motion"
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -38,7 +36,7 @@ const socialLinks = [
 
 export default function ContactSection() {
 	const ref = useRef(null)
-	const isInView = useInView(ref, { once: true, margin: "-100px" })
+	const [isVisible, setIsVisible] = useState(false)
 	const [formData, setFormData] = useState({
 		name: "",
 		email: "",
@@ -46,6 +44,23 @@ export default function ContactSection() {
 	})
 	const [isSubmitting, setIsSubmitting] = useState(false)
 	const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle')
+
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				if (entry.isIntersecting) {
+					setIsVisible(true)
+				}
+			},
+			{ threshold: 0.1, rootMargin: "-100px" }
+		)
+
+		if (ref.current) {
+			observer.observe(ref.current)
+		}
+
+		return () => observer.disconnect()
+	}, [])
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
@@ -93,13 +108,10 @@ export default function ContactSection() {
 	return (
 		<section id="contact" className="py-16" ref={ref}>
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-				<motion.div
-					initial={{ opacity: 0, y: 50 }}
-					animate={
-						isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }
-					}
-					transition={{ duration: 0.8 }}
-					className="text-center mb-12"
+				<div
+					className={`text-center mb-12 transition-all duration-800 ${
+						isVisible ? "animate-fade-in-up opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+					}`}
 				>
 					<h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
 						Get In Touch
@@ -108,17 +120,17 @@ export default function ContactSection() {
 						Ready to start your next project? Let&apos;s create something
 						amazing together.
 					</p>
-				</motion.div>
+				</div>
 
 				<div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
 					{/* Contact Information */}
-					<motion.div
-						initial={{ opacity: 0, x: -50 }}
-						animate={
-							isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }
-						}
-						transition={{ duration: 0.8, delay: 0.2 }}
-						className="space-y-6 lg:space-y-8"
+					<div
+						className={`space-y-6 lg:space-y-8 transition-all duration-800 ${
+							isVisible
+								? "animate-fade-in-left opacity-100 translate-x-0"
+								: "opacity-0 -translate-x-12"
+						}`}
+						style={{ animationDelay: isVisible ? "0.2s" : "0s" }}
 					>
 						<div>
 							<h3 className="text-2xl font-bold mb-4">Let&apos;s Connect</h3>
@@ -132,18 +144,15 @@ export default function ContactSection() {
 
 						<div className="space-y-4">
 							{contactInfo.map((item, index) => (
-								<motion.a
+								<a
 									key={index}
 									href={item.href}
-									initial={{ opacity: 0, y: 20 }}
-									animate={
-										isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
-									}
-									transition={{
-										duration: 0.6,
-										delay: 0.4 + index * 0.1,
-									}}
-									className="flex items-center p-3 sm:p-4 rounded-lg glass hover:bg-primary/5 transition-colors group"
+									className={`flex items-center p-3 sm:p-4 rounded-lg glass hover:bg-primary/5 transition-all duration-500 group ${
+										isVisible
+											? "animate-fade-in-up opacity-100 translate-y-0"
+											: "opacity-0 translate-y-5"
+									}`}
+									style={{ animationDelay: isVisible ? `${0.4 + index * 0.1}s` : "0s" }}
 								>
 									<div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-primary to-blue-600 rounded-full flex items-center justify-center mr-3 sm:mr-4 group-hover:scale-110 transition-transform flex-shrink-0">
 										<item.icon size={18} className="text-primary-foreground sm:w-5 sm:h-5" />
@@ -154,53 +163,53 @@ export default function ContactSection() {
 											{item.value}
 										</p>
 									</div>
-								</motion.a>
+								</a>
 							))}
 						</div>
 
-						<motion.div
-							initial={{ opacity: 0, y: 20 }}
-							animate={
-								isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
-							}
-							transition={{ duration: 0.6, delay: 0.8 }}
-							className="pt-8"
+						<div
+							className={`pt-8 transition-all duration-600 ${
+								isVisible
+									? "animate-fade-in-up opacity-100 translate-y-0"
+									: "opacity-0 translate-y-5"
+							}`}
+							style={{ animationDelay: isVisible ? "0.8s" : "0s" }}
 						>
 							<h4 className="text-base sm:text-lg font-semibold mb-4">Follow Me</h4>
 							<div className="flex space-x-3 sm:space-x-4">
 								{socialLinks.map((social, index) => (
-									<motion.a
+									<a
 										key={index}
 										href={social.href}
-										whileHover={{ scale: 1.1, y: -2 }}
-										whileTap={{ scale: 0.95 }}
-										className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-primary to-blue-600 rounded-full flex items-center justify-center text-primary-foreground hover:shadow-lg transition-shadow"
+										className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-primary to-blue-600 rounded-full flex items-center justify-center text-primary-foreground hover:shadow-lg transition-all duration-300 hover:scale-110 hover:-translate-y-1"
 									>
 										<social.icon size={18} className="sm:w-5 sm:h-5" />
-									</motion.a>
+									</a>
 								))}
 							</div>
-						</motion.div>
-					</motion.div>
+						</div>
+					</div>
 
 					{/* Contact Form */}
-					<motion.div
-						initial={{ opacity: 0, x: 50 }}
-						animate={
-							isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }
-						}
-						transition={{ duration: 0.8, delay: 0.4 }}
+					<div
+						className={`transition-all duration-800 ${
+							isVisible
+								? "animate-fade-in-right opacity-100 translate-x-0"
+								: "opacity-0 translate-x-12"
+						}`}
+						style={{ animationDelay: isVisible ? "0.4s" : "0s" }}
 					>
 						<Card className="glass border-0 shadow-2xl">
 							<CardContent className="p-4 sm:p-6 lg:p-8">
 								<h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Send Message</h3>
 								<form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-									<motion.div
-										initial={{ opacity: 0, y: 20 }}
-										animate={
-											isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
-										}
-										transition={{ duration: 0.6, delay: 0.6 }}
+									<div
+										className={`transition-all duration-600 ${
+											isVisible
+												? "animate-fade-in-up opacity-100 translate-y-0"
+												: "opacity-0 translate-y-5"
+										}`}
+										style={{ animationDelay: isVisible ? "0.6s" : "0s" }}
 									>
 										<Input
 											name="name"
@@ -210,14 +219,15 @@ export default function ContactSection() {
 											className="glass border-primary/20 focus:border-primary"
 											required
 										/>
-									</motion.div>
+									</div>
 
-									<motion.div
-										initial={{ opacity: 0, y: 20 }}
-										animate={
-											isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
-										}
-										transition={{ duration: 0.6, delay: 0.7 }}
+									<div
+										className={`transition-all duration-600 ${
+											isVisible
+												? "animate-fade-in-up opacity-100 translate-y-0"
+												: "opacity-0 translate-y-5"
+										}`}
+										style={{ animationDelay: isVisible ? "0.7s" : "0s" }}
 									>
 										<Input
 											name="email"
@@ -228,14 +238,15 @@ export default function ContactSection() {
 											className="glass border-primary/20 focus:border-primary"
 											required
 										/>
-									</motion.div>
+									</div>
 
-									<motion.div
-										initial={{ opacity: 0, y: 20 }}
-										animate={
-											isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
-										}
-										transition={{ duration: 0.6, delay: 0.8 }}
+									<div
+										className={`transition-all duration-600 ${
+											isVisible
+												? "animate-fade-in-up opacity-100 translate-y-0"
+												: "opacity-0 translate-y-5"
+										}`}
+										style={{ animationDelay: isVisible ? "0.8s" : "0s" }}
 									>
 										<Textarea
 											name="message"
@@ -246,14 +257,15 @@ export default function ContactSection() {
 											className="glass border-primary/20 focus:border-primary resize-none"
 											required
 										/>
-									</motion.div>
+									</div>
 
-									<motion.div
-										initial={{ opacity: 0, y: 20 }}
-										animate={
-											isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
-										}
-										transition={{ duration: 0.6, delay: 0.9 }}
+									<div
+										className={`transition-all duration-600 ${
+											isVisible
+												? "animate-fade-in-up opacity-100 translate-y-0"
+												: "opacity-0 translate-y-5"
+										}`}
+										style={{ animationDelay: isVisible ? "0.9s" : "0s" }}
 									>
 										<Button
 											type="submit"
@@ -288,11 +300,11 @@ export default function ContactSection() {
 												</>
 											)}
 										</Button>
-									</motion.div>
+									</div>
 								</form>
 							</CardContent>
 						</Card>
-					</motion.div>
+					</div>
 				</div>
 			</div>
 		</section>

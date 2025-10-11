@@ -12,7 +12,7 @@ export const emailTemplate = (name: string, email: string, message: string) => `
 <body>
   <div class="container">
     <div class="header">
-      <h1>New Message!</h1>
+      <h1>📬New Message!</h1>
       <p>Someone reached out through your portfolio!</p>
     </div>
 

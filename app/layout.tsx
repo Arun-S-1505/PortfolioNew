@@ -3,9 +3,7 @@ import { GeistSans } from 'geist/font/sans'
 import { GeistMono } from 'geist/font/mono'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
-import Navbar from '@/components/navbar'
-import ThemeToggle from '@/components/theme-toggle'
-import LoadingScreen from '@/components/loading-screen'
+import ClientLayout from '@/components/client-layout'
 
 export const metadata: Metadata = {
   title: 'Arun Saravanan S - Portfolio',
@@ -23,12 +21,11 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
-        <LoadingScreen />
-        <Navbar />
-        <ThemeToggle />
-        {children}
+        <ClientLayout>
+          {children}
+        </ClientLayout>
         <Analytics />
       </body>
     </html>
