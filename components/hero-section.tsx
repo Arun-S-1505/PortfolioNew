@@ -1,132 +1,140 @@
-"use client"
+﻿"use client";
 
-import { useState, useEffect } from "react"
-import { ChevronDown } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { ArrowDown, Github, Linkedin, Mail, Twitter } from "lucide-react";
+import TypingEffect from "@/components/typing-effect";
 
-export default function HeroSection() {
-  const [text, setText] = useState("")
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [loopNum, setLoopNum] = useState(0)
-  const [typingSpeed, setTypingSpeed] = useState(150)
-
-  const words = ["Web Developer", "Tech Enthusiast", "Problem Solver"]
+export default function Hero() {
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    const handleType = () => {
-      const current = loopNum % words.length
-      const fullText = words[current]
+    setMounted(true);
+  }, []);
 
-      setText(isDeleting ? fullText.substring(0, text.length - 1) : fullText.substring(0, text.length + 1))
-
-      setTypingSpeed(isDeleting ? 30 : 150)
-
-      if (!isDeleting && text === fullText) {
-        setTimeout(() => setIsDeleting(true), 500)
-      } else if (isDeleting && text === "") {
-        setIsDeleting(false)
-        setLoopNum(loopNum + 1)
-      }
+  const scrollToAbout = () => {
+    const aboutSection = document.querySelector("#about");
+    if (aboutSection) {
+      aboutSection.scrollIntoView({ behavior: "smooth" });
     }
+  };
 
-    const timer = setTimeout(handleType, typingSpeed)
-    return () => clearTimeout(timer)
-  }, [text, isDeleting, loopNum, typingSpeed, words])
-
-  const scrollToProjects = () => {
-    const element = document.querySelector("#projects")
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
-    }
-  }
+  const socialIcons = {
+    github: Github,
+    linkedin: Linkedin,
+    twitter: Twitter,
+    email: Mail,
+  };
 
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative w-full">
-      {/* Animated Background */}
-      <div className="absolute inset-0 -z-10 w-full">
-        <div className="absolute top-10 left-4 sm:top-20 sm:left-20 w-48 h-48 sm:w-72 sm:h-72 bg-blue-500/10 rounded-full blur-3xl animate-float"></div>
-        <div
-          className="absolute bottom-10 right-4 sm:bottom-20 sm:right-20 w-64 h-64 sm:w-96 sm:h-96 bg-purple-500/10 rounded-full blur-3xl animate-float"
-          style={{ animationDelay: "2s" }}
-        ></div>
-        <div
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 sm:w-64 sm:h-64 bg-green-500/10 rounded-full blur-3xl animate-float"
-          style={{ animationDelay: "4s" }}
-        ></div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 sm:pt-0">
+    <section id="hero" className="min-h-[calc(100vh-4rem)] flex items-center justify-center relative bg-background">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 sm:pt-6 sm:pb-12 lg:pt-8 lg:pb-16">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          <div
-            className="flex justify-center lg:justify-start order-1 lg:order-1 animate-fade-in-left"
-          >
-            <div className="relative">
-              <div
-                className="relative w-64 h-64 sm:w-80 sm:h-80 rounded-full overflow-hidden glass border-4 border-primary/20 animate-fade-in-scale"
-              >
-                <img src="/Photo.jpg" alt="Profile Photo" className="w-full h-full object-cover" />
-              </div>
-
-              {/* Floating elements around photo */}
-              <div
-                className="absolute -top-4 -right-4 w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full animate-spin-slow"
-              ></div>
-              <div
-                className="absolute -bottom-4 -left-4 w-6 h-6 bg-gradient-to-r from-green-500 to-blue-500 rounded-full animate-spin-reverse"
-              ></div>
-            </div>
-          </div>
-
-          {/* Text content */}
-          <div
-            className="text-center lg:text-left order-2 lg:order-2 animate-fade-in-right"
-          >
-            <h1
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-primary via-blue-600 to-purple-600 bg-clip-text text-transparent leading-tight animate-fade-in-scale-delay"
-            >
-              Hi, I'm Arun Saravanan S
-            </h1>
-
-            <div
-              className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl mb-4 sm:mb-6 min-h-[50px] sm:min-h-[60px] flex items-center justify-center lg:justify-start animate-fade-in-up-delay-2"
-            >
-              <span className="text-muted-foreground">I'm a </span>
-              <span className="text-primary font-semibold ml-2 min-w-[200px] sm:min-w-[250px] md:min-w-[300px] text-left">
-                {text}
-                <span className="animate-pulse">|</span>
-              </span>
-            </div>
-
-            <p
-              className="text-base sm:text-lg md:text-xl text-muted-foreground mb-6 sm:mb-8 max-w-2xl mx-auto lg:mx-0 text-balance px-4 sm:px-0 animate-fade-in-up-delay-3"
-            >
-              I create stunning, interactive web experiences that blend beautiful design with cutting-edge technology.
+          {/* Content */}
+          <div className={`space-y-8 ${mounted ? "animate-fade-in-up" : "opacity-0"}`}>
+            <div className="space-y-4">
+              <p className="text-primary font-mono text-sm tracking-wider uppercase">Hello, I am</p>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">Arun Saravanan S</h1>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-muted-foreground">
+                <TypingEffect
+                  texts={["Web Developer","Tech Enthusiast","Problem Solver"]}
+                  speed={120}
+                  deleteSpeed={80}
+                  pauseDuration={3000}
+                />
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
+                <span className="text-primary font-semibold">I create stunning, interactive</span>{" "}
+                 web experiences that blend beautiful design with cutting-edge technology.
               Let's build something amazing together.
-            </p>
-
-            <div className="animate-fade-in-up-delay-4">
+                <span className="text-primary font-semibold"> Specializing in</span>{" "}
+                scalable applications and innovative solutions.
+              </p>
+            </div>
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
               <Button
-                onClick={scrollToProjects}
                 size="lg"
-                className="bg-gradient-to-r from-primary to-blue-600 hover:from-blue-600 hover:to-purple-600 text-primary-foreground px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105 animate-pulse-glow"
+                onClick={() => document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" })}
+                className="text-base px-8 py-3 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 View My Work
               </Button>
+              <Button
+                variant="outline"
+                size="lg"
+                onClick={() => document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" })}
+                className="text-base px-8 py-3 border-2 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300 shadow-md hover:shadow-lg"
+              >
+                Get In Touch
+              </Button>
+            </div>
+            {/* Social Links */}
+            <div className="flex space-x-4 pt-4">
+              {[
+                { platform: "github", url: "https://github.com/Arun-S-1505" },
+                { platform: "linkedin", url: "https://www.linkedin.com/in/arun-saravanan-s/" },
+                { platform: "twitter", url: "https://x.com/arunsarava68426" }
+              ].map(({ platform, url }) => {
+                const Icon = socialIcons[platform as keyof typeof socialIcons];
+                const socialColors = {
+                  github: "hover:bg-[#333] hover:text-white",
+                  linkedin: "hover:bg-[#0077b5] hover:text-white",
+                  twitter: "hover:bg-[#1DA1F2] hover:text-white",
+                  email: "hover:bg-primary hover:text-primary-foreground",
+                };
+                return (
+                  <a
+                    key={platform}
+                    href={typeof url === "string" ? url : undefined}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`group relative p-3 rounded-xl bg-muted/50 border border-border text-muted-foreground transition-all duration-300 ${socialColors[platform as keyof typeof socialColors]} hover:shadow-lg hover:scale-110`}
+                  >
+                    <Icon className="w-6 h-6" />
+                    <span className="sr-only">{platform}</span>
+                    <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 bg-foreground text-background px-2 py-1 rounded text-xs opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                      {platform.charAt(0).toUpperCase() + platform.slice(1)}
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+          </div>
+          <div className={`flex justify-center lg:justify-end order-first lg:order-last ${mounted ? "animate-fade-in" : "opacity-0"}`}>
+            <div className="relative">
+              <div className="w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-2xl transform rotate-6"></div>
+                <div className="relative w-full h-full bg-muted rounded-2xl overflow-hidden border border-border">
+                  <Image
+                    src="/Photo.jpg"
+                    alt="Arun Saravanan S"
+                    fill
+                    className="object-cover"
+                    priority
+                    sizes="(max-width: 640px) 256px, (max-width: 1024px) 320px, 384px"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <div
-          className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 animate-fade-in-delay-5"
+      </div>
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+        <button
+          onClick={scrollToAbout}
+          className="text-muted-foreground hover:text-foreground transition-colors animate-bounce"
         >
-          <div
-            className="cursor-pointer animate-bounce-gentle"
-            onClick={scrollToProjects}
-          >
-            <ChevronDown size={28} className="text-muted-foreground hover:text-primary transition-colors sm:w-8 sm:h-8" />
-          </div>
-        </div>
+          <ArrowDown className="w-6 h-6" />
+        </button>
+      </div>
+      {/* Background decoration */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl"></div>
       </div>
     </section>
-  )
+  );
 }

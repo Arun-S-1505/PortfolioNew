@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Navbar from "@/components/navbar"
-import HeroSection from "@/components/hero-section"
+import Hero from "@/components/hero-section"
 import AboutSection from "@/components/about-section"
 import ProjectsSection from "@/components/projects-section"
 import SkillsSection from "@/components/skills-section"
@@ -25,7 +25,7 @@ export default function Portfolio() {
     <div className="min-h-screen bg-background text-foreground">
       <div className="pt-16" style={{ width: '100vw', overflowX: 'hidden', position: 'relative' }}>
         <main>
-          <HeroSection />
+          <Hero />
           <AboutSection />
           <ProjectsSection />
           <SkillsSection />

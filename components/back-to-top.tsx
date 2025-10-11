@@ -38,7 +38,7 @@ export default function BackToTop() {
       <Button
         onClick={scrollToTop}
         size="icon"
-        className="w-12 h-12 rounded-full bg-gradient-to-r from-primary to-blue-600 hover:from-blue-600 hover:to-purple-600 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse-glow"
+        className="w-12 h-12 rounded-full bg-white hover:bg-gray-100 text-black shadow-lg hover:shadow-xl transition-all duration-300 animate-pulse-glow"
       >
         <ChevronUp size={20} />
       </Button>

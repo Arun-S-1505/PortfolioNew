@@ -64,7 +64,7 @@ export default function SkillsSection() {
   }, [])
 
   return (
-    <section id="skills" className="py-16 bg-muted/30" ref={ref}>
+    <section id="skills" className="py-16 bg-black" ref={ref}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           className={`text-center mb-12 transition-all duration-800 ${

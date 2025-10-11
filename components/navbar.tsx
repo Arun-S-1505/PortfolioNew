@@ -1,124 +1,113 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Menu, X } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Menu, X, Download } from "lucide-react"
 
 const navItems = [
-  { name: "Home", href: "#home" },
   { name: "About", href: "#about" },
-  { name: "Projects", href: "#projects" },
   { name: "Skills", href: "#skills" },
+  { name: "Projects", href: "#projects" },
   { name: "Contact", href: "#contact" },
 ]
 
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    // Prevent browser auto scroll restoration on reload which can cause the
-    // navbar to appear off-screen. Set manual restoration and ensure we're
-    // at the top on initial mount.
-    try {
-      if (history && 'scrollRestoration' in history) {
-        history.scrollRestoration = 'manual'
-      }
-    } catch (e) {
-      // ignore (SSR safety)
-    }
-
-
-    // Ensure initial scrolled state matches current position and reset to top
-    if (typeof window !== 'undefined') {
-      setIsScrolled(window.scrollY > 50)
-      if (window.scrollY > 0) {
-        window.scrollTo({ top: 0 })
-      }
-      // Force immediate layout recalculation and viewport fix
-      const forceReflow = () => {
-        document.documentElement.style.width = '100vw'
-        document.body.style.width = '100vw'
-        void document.body.offsetHeight
-        document.documentElement.scrollLeft = 0
-        window.scrollTo(0, 0)
-        window.dispatchEvent(new Event('resize'))
-      }
-      
-      forceReflow()
-      // Run again after a brief delay to ensure it takes effect
-      setTimeout(forceReflow, 100)
-    }
-
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      setScrolled(window.scrollY > 50)
     }
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href)
     if (element) {
       element.scrollIntoView({ behavior: "smooth" })
+      setIsOpen(false)
     }
-    setIsMobileMenuOpen(false)
   }
 
   return (
     <nav
-      style={{ position: 'fixed', top: 0, left: 0, right: 0, zIndex: 50 }}
-      className={`transition-all duration-300 ${
-        isScrolled
-          ? "glass backdrop-blur-md shadow-lg"
-          : "bg-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled ? "bg-background/95 backdrop-blur-sm" : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
-          <div
-            className="text-2xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent"
-          >
-            Portfolio
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <button
+              onClick={() => scrollToSection("#hero")}
+              className="text-xl font-bold text-foreground hover:text-primary transition-colors"
+            >
+              {"Arun Saravanan S"
+                .split(" ")
+                .filter((_, index, arr) => index === 0 || index === arr.length - 1)
+                .map((name: string) => name[0])
+                .join("")}
+            </button>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
-            {navItems.map((item) => (
-              <button
-                key={item.name}
-                onClick={() => scrollToSection(item.href)}
-                className="text-foreground hover:text-primary transition-colors duration-200 relative group"
+          <div className="hidden md:block">
+            <div className="ml-10 flex items-baseline space-x-8">
+              {navItems.map((item) => (
+                <button
+                  key={item.name}
+                  onClick={() => scrollToSection(item.href)}
+                  className="text-muted-foreground hover:text-foreground px-3 py-2 text-sm font-medium transition-colors"
+                >
+                  {item.name}
+                </button>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => window.open("/resume.pdf", "_blank")}
+                className="ml-4"
               >
-                {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
-              </button>
-            ))}
+                <Download className="w-4 h-4 mr-2" />
+                Resume
+              </Button>
+            </div>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="md:hidden p-2"
-          >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
+          {/* Mobile menu button */}
+          <div className="md:hidden flex items-center space-x-2">
+            <Button variant="ghost" size="sm" onClick={() => setIsOpen(!isOpen)}>
+              {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </Button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
-        {isMobileMenuOpen && (
-          <div
-            className="md:hidden pb-4"
-          >
-            {navItems.map((item) => (
-              <button
-                key={item.name}
-                onClick={() => scrollToSection(item.href)}
-                className="block w-full text-left py-2 text-foreground hover:text-primary transition-colors duration-200"
+        {isOpen && (
+          <div className="md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-background border-t border-border">
+              {navItems.map((item) => (
+                <button
+                  key={item.name}
+                  onClick={() => scrollToSection(item.href)}
+                  className="text-muted-foreground hover:text-foreground block px-3 py-2 text-base font-medium w-full text-left transition-colors"
+                >
+                  {item.name}
+                </button>
+              ))}
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => window.open("/resume.pdf", "_blank")}
+                className="mt-4 ml-3"
               >
-                {item.name}
-              </button>
-            ))}
+                <Download className="w-4 h-4 mr-2" />
+                Resume
+              </Button>
+            </div>
           </div>
         )}
       </div>
