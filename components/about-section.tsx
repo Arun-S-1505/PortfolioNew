@@ -2,7 +2,7 @@
 
 import { useRef, useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
-import { Calendar, MapPin, Award } from "lucide-react"
+import { Award, Briefcase, Zap } from "lucide-react"
 
 const timelineData = [
   {
@@ -11,13 +11,15 @@ const timelineData = [
     company: "Zeex AI",
     description: "Contributing to the development of AI-driven web platforms using React, Next.js, and TypeScript to deliver high-performance user experiences.",
     icon: Award,
+    color: "from-green-500 to-emerald-600"
   },
   {
     year: "2025",
     title: "Club Member - Current",
     company: "Codezilla",
-    description: "Collaborating with peers in Mozilla’s Codezilla tech community to build innovative web projects and enhance open-source development skills.",
-    icon: Calendar,
+    description: "Collaborating with peers in Mozilla's Codezilla tech community to build innovative web projects and enhance open-source development skills.",
+    icon: Zap,
+    color: "from-blue-500 to-cyan-600"
   },
   {
     year: "2025",
@@ -25,7 +27,8 @@ const timelineData = [
     company: "Innomatics Research Labs",
     description:
       "Kickstarted my web development career by designing responsive interfaces and learning the fundamentals of full-stack development.",
-    icon: MapPin,
+    icon: Briefcase,
+    color: "from-purple-500 to-pink-600"
   },
 ]
 
@@ -96,8 +99,12 @@ export default function AboutSection() {
                     explore new technologies to enhance my skills and bring ideas to life.
                 </p>
                 <div className="mt-4 sm:mt-6 flex flex-wrap gap-1.5 sm:gap-2 justify-center sm:justify-start">
-                  {["React", "Next.js", "TypeScript", "Tailwind CSS", "Node.js"].map((tech) => (
-                    <span key={tech} className="px-2 sm:px-3 py-0.5 sm:py-1 bg-primary/10 text-primary rounded-full text-xs sm:text-sm">
+                  {["React", "Next.js", "TypeScript", "Tailwind CSS", "Node.js"].map((tech, idx) => (
+                    <span 
+                      key={tech} 
+                      className="px-2 sm:px-3 py-0.5 sm:py-1 bg-gradient-to-r from-primary/10 to-blue-600/10 border border-primary/20 text-primary rounded-full text-xs sm:text-sm font-medium hover:scale-110 hover:border-primary/40 transition-all duration-200 cursor-default"
+                      style={{ animationDelay: `${idx * 0.1}s` }}
+                    >
                       {tech}
                     </span>
                   ))}
@@ -115,32 +122,39 @@ export default function AboutSection() {
             }`}
             style={{ animationDelay: isVisible ? "0.4s" : "0s" }}
           >
-            <h3 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8">My Journey</h3>
-            {timelineData.map((item, index) => (
-              <div
-                key={index}
-                className={`flex items-start space-x-4 group ${
-                  isVisible
-                    ? "animate-fade-in-up opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
-                }`}
-                style={{ animationDelay: isVisible ? `${0.6 + index * 0.2}s` : "0s" }}
-              >
-                <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-primary to-blue-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                  <item.icon size={18} className="text-primary-foreground sm:w-5 sm:h-5" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center mb-1 sm:mb-2">
-                    <span className="text-xs sm:text-sm font-semibold text-primary bg-primary/10 px-2 py-0.5 sm:py-1 rounded">
-                      {item.year}
-                    </span>
+            <h3 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 flex items-center gap-2">
+              <span className="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">My Journey</span>
+            </h3>
+            <div className="relative">
+              {/* Timeline line */}
+              <div className="absolute left-5 sm:left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-primary via-blue-600 to-purple-600"></div>
+              
+              {timelineData.map((item, index) => (
+                <div
+                  key={index}
+                  className={`relative flex items-start space-x-4 mb-8 sm:mb-10 group ${
+                    isVisible
+                      ? "animate-fade-in-up opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-8"
+                  }`}
+                  style={{ animationDelay: isVisible ? `${0.6 + index * 0.2}s` : "0s" }}
+                >
+                  <div className={`flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r ${item.color} rounded-full flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg transition-all duration-300 relative z-10 ring-4 ring-background`}>
+                    <item.icon size={18} className="text-white sm:w-5 sm:h-5" />
                   </div>
-                  <h4 className="text-base sm:text-lg font-semibold mb-0.5 sm:mb-1">{item.title}</h4>
-                  <p className="text-muted-foreground text-xs sm:text-sm mb-1 sm:mb-2">{item.company}</p>
-                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+                  <div className="flex-1 min-w-0 glass p-4 rounded-lg border border-primary/10 hover:border-primary/30 transition-all duration-300">
+                    <div className="flex items-center mb-1 sm:mb-2">
+                      <span className="text-xs sm:text-sm font-semibold text-primary bg-primary/10 px-2 py-0.5 sm:py-1 rounded border border-primary/20">
+                        {item.year}
+                      </span>
+                    </div>
+                    <h4 className="text-base sm:text-lg font-semibold mb-0.5 sm:mb-1">{item.title}</h4>
+                    <p className="text-muted-foreground text-xs sm:text-sm mb-1 sm:mb-2 font-medium">{item.company}</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>

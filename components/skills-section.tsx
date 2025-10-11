@@ -2,27 +2,27 @@
 
 import { useRef, useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
+import { Atom, Zap, FileCode, Palette, Server, Database, Eye } from "lucide-react"
 
 const skills = [
-  { name: "React", icon: "⚛️" },
-  { name: "Next.js", icon: "▲" },
-  { name: "TypeScript", icon: "📘" },
-  { name: "Tailwind CSS", icon: "🎨" },
-  { name: "Node.js", icon: "🟢" },
-  //{ name: "Python", icon: "🐍" },
-  { name: "SQL", icon: "🗄️" },
-  { name: "UI/UX Design", icon: "🎯" },
+  { name: "React", icon: <Atom className="w-6 h-6 text-blue-500" /> },
+  { name: "Next.js", icon: <Zap className="w-6 h-6 text-gray-800" /> },
+  { name: "TypeScript", icon: <FileCode className="w-6 h-6 text-blue-600" /> },
+  { name: "Tailwind CSS", icon: <Palette className="w-6 h-6 text-cyan-500" /> },
+  { name: "Node.js", icon: <Server className="w-6 h-6 text-green-600" /> },
+  { name: "SQL", icon: <Database className="w-6 h-6 text-orange-500" /> },
+  { name: "UI/UX Design", icon: <Eye className="w-6 h-6 text-purple-500" /> },
 ]
 
 const technologies = [
-  { name: "React", icon: "⚛️" },
-  { name: "Next.js", icon: "▲" },
-  { name: "TypeScript", icon: "TS" },
-  { name: "Tailwind", icon: "🌊" },
-  { name: "Node.js", icon: "🟢" },
+  { name: "React", icon: <Atom className="w-6 h-6 text-blue-500" /> },
+  { name: "Next.js", icon: <Zap className="w-6 h-6 text-gray-800" /> },
+  { name: "TypeScript", icon: <FileCode className="w-6 h-6 text-blue-600" /> },
+  { name: "Tailwind", icon: <Palette className="w-6 h-6 text-cyan-500" /> },
+  { name: "Node.js", icon: <Server className="w-6 h-6 text-green-600" /> },
   //{ name: "Python", icon: "🐍" },
-  { name: "SQL", icon: "🗄️" },
-  { name: "MongoDB", icon: "🍃" },
+  { name: "SQL", icon: <Database className="w-6 h-6 text-orange-500" /> },
+  { name: "MongoDB", icon: <Database className="w-6 h-6 text-green-500" /> },
   //{ name: "PostgreSQL", icon: "🐘" },
 ]
 
@@ -37,7 +37,9 @@ function SkillItem({ skill, index, isInView }: { skill: any; index: number; isIn
       } hover:scale-105 hover:-translate-y-1`}
       style={{ animationDelay: isInView ? `${index * 0.1}s` : "0s" }}
     >
-      <div className="text-xl sm:text-2xl mb-1 sm:mb-2 group-hover:scale-110 transition-transform">{skill.icon}</div>
+      <div className="mb-1 sm:mb-2 group-hover:scale-110 transition-transform flex justify-center items-center">
+        {skill.icon}
+      </div>
       <div className="font-semibold text-xs sm:text-sm">{skill.name}</div>
     </div>
   )
@@ -128,7 +130,7 @@ export default function SkillsSection() {
                       } hover:scale-105 hover:-translate-y-1`}
                       style={{ animationDelay: isVisible ? `${0.6 + index * 0.1}s` : "0s" }}
                     >
-                      <div className="text-xl sm:text-2xl mb-1 sm:mb-2 group-hover:scale-110 transition-transform">{tech.icon}</div>
+                      <div className="mb-1 sm:mb-2 group-hover:scale-110 transition-transform flex justify-center items-center">{tech.icon}</div>
                       <div className="font-semibold text-xs sm:text-sm">{tech.name}</div>
                     </div>
                   ))}
