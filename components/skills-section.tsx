@@ -15,21 +15,22 @@ const skills = [
 ]
 
 const technologies = [
-  { name: "React", icon: "⚛️", color: "from-blue-400 to-blue-600" },
-  { name: "Next.js", icon: "▲", color: "from-gray-700 to-gray-900" },
-  { name: "TypeScript", icon: "TS", color: "from-blue-500 to-blue-700" },
-  { name: "Tailwind", icon: "🌊", color: "from-teal-400 to-teal-600" },
-  { name: "Node.js", icon: "🟢", color: "from-green-400 to-green-600" },
-  //{ name: "Python", icon: "🐍", color: "from-yellow-400 to-yellow-600" },
-  { name: "SQL", icon: "🗄️", color: "from-orange-400 to-orange-600" },
-  { name: "MongoDB", icon: "🍃", color: "from-green-500 to-green-700" },
-  //{ name: "PostgreSQL", icon: "🐘", color: "from-blue-600 to-blue-800" },
+  { name: "React", icon: "⚛️" },
+  { name: "Next.js", icon: "▲" },
+  { name: "TypeScript", icon: "TS" },
+  { name: "Tailwind", icon: "🌊" },
+  { name: "Node.js", icon: "🟢" },
+  //{ name: "Python", icon: "🐍" },
+  { name: "SQL", icon: "🗄️" },
+  { name: "MongoDB", icon: "🍃" },
+  //{ name: "PostgreSQL", icon: "🐘" },
 ]
+
 
 function SkillItem({ skill, index, isInView }: { skill: any; index: number; isInView: boolean }) {
   return (
     <div
-      className={`p-3 sm:p-4 rounded-xl bg-gradient-to-r from-primary/10 to-blue-600/10 text-center cursor-pointer group border border-primary/20 transition-all duration-250 ${
+      className={`p-3 sm:p-4 rounded-xl glass text-center cursor-pointer group border border-primary/10 hover:border-primary/30 transition-all duration-250 ${
         isInView
           ? "animate-fade-in-scale"
           : "opacity-0"
@@ -120,7 +121,7 @@ export default function SkillsSection() {
                   {technologies.map((tech, index) => (
                     <div
                       key={tech.name}
-                      className={`p-3 sm:p-4 rounded-xl bg-gradient-to-r ${tech.color} text-white text-center cursor-pointer group transition-all duration-250 ${
+                      className={`p-3 sm:p-4 rounded-xl glass text-center cursor-pointer group border border-primary/10 hover:border-primary/30 transition-all duration-250 ${
                         isVisible
                           ? "animate-fade-in-scale"
                           : "opacity-0"
