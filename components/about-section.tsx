@@ -32,15 +32,18 @@ const timelineData = [
 export default function AboutSection() {
   const ref = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [hasAnimated, setHasAnimated] = useState(false)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !hasAnimated) {
           setIsVisible(true)
+          setHasAnimated(true)
+          observer.disconnect()
         }
       },
-      { threshold: 0.1, rootMargin: "-100px" }
+      { threshold: 0.15, rootMargin: "-50px" }
     )
 
     if (ref.current) {
@@ -48,14 +51,14 @@ export default function AboutSection() {
     }
 
     return () => observer.disconnect()
-  }, [])
+  }, [hasAnimated])
 
   return (
-    <section id="about" className="py-16 bg-black" ref={ref}>
+    <section id="about" className="py-8 bg-black" ref={ref}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
-          className={`text-center mb-12 transition-all duration-800 ${
-            isVisible ? "animate-fade-in-up opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+          className={`text-center mb-8 ${
+            isVisible ? "animate-fade-in-up" : "opacity-0"
           }`}
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
@@ -69,10 +72,10 @@ export default function AboutSection() {
                 <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start lg:items-center">
           {/* Profile Card */}
           <div
-            className={`transition-all duration-800 ${
+            className={`${
               isVisible
-                ? "animate-fade-in-left opacity-100 translate-x-0"
-                : "opacity-0 -translate-x-12"
+                ? "animate-fade-in-left"
+                : "opacity-0"
             }`}
             style={{ animationDelay: isVisible ? "0.2s" : "0s" }}
           >
@@ -105,10 +108,10 @@ export default function AboutSection() {
 
           {/* Timeline */}
           <div
-            className={`space-y-4 sm:space-y-6 transition-all duration-800 ${
+            className={`space-y-4 sm:space-y-6 ${
               isVisible
-                ? "animate-fade-in-right opacity-100 translate-x-0"
-                : "opacity-0 translate-x-12"
+                ? "animate-fade-in-right"
+                : "opacity-0"
             }`}
             style={{ animationDelay: isVisible ? "0.4s" : "0s" }}
           >
@@ -116,14 +119,14 @@ export default function AboutSection() {
             {timelineData.map((item, index) => (
               <div
                 key={index}
-                className={`flex items-start space-x-4 group transition-all duration-600 ${
+                className={`flex items-start space-x-4 group ${
                   isVisible
                     ? "animate-fade-in-up opacity-100 translate-y-0"
                     : "opacity-0 translate-y-8"
                 }`}
                 style={{ animationDelay: isVisible ? `${0.6 + index * 0.2}s` : "0s" }}
               >
-                <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-primary to-blue-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-primary to-blue-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
                   <item.icon size={18} className="text-primary-foreground sm:w-5 sm:h-5" />
                 </div>
                 <div className="flex-1 min-w-0">

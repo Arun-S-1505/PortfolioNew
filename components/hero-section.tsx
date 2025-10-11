@@ -16,7 +16,14 @@ export default function Hero() {
   const scrollToAbout = () => {
     const aboutSection = document.querySelector("#about");
     if (aboutSection) {
-      aboutSection.scrollIntoView({ behavior: "smooth" });
+      const navbarHeight = 64; // h-16 = 64px
+      const elementPosition = aboutSection.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - navbarHeight;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
     }
   };
 
@@ -29,12 +36,12 @@ export default function Hero() {
 
   return (
     <section id="hero" className="min-h-[calc(100vh-4rem)] flex items-center justify-center relative bg-background">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8 sm:pt-6 sm:pb-12 lg:pt-8 lg:pb-16">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-4 sm:pt-3 sm:pb-6 lg:pt-4 lg:pb-8">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Content */}
           <div className={`space-y-8 ${mounted ? "animate-fade-in-up" : "opacity-0"}`}>
-            <div className="space-y-4">
-              <p className="text-primary font-mono text-sm tracking-wider uppercase">Hello, I am</p>
+            <div className="space-y-2">
+              <p className="text-primary font-mono text-lg tracking-wider uppercase">Hello, I am</p>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">Arun Saravanan S</h1>
               <h2 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-muted-foreground">
                 <TypingEffect
@@ -57,7 +64,7 @@ export default function Hero() {
               <Button
                 size="lg"
                 onClick={() => document.querySelector("#projects")?.scrollIntoView({ behavior: "smooth" })}
-                className="text-base px-8 py-3 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-xl transition-all duration-300"
+                className="text-base px-8 py-3 font-semibold bg-gradient-to-r from-primary to-blue-600 hover:from-blue-600 hover:to-purple-600 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
               >
                 View My Work
               </Button>
@@ -102,7 +109,7 @@ export default function Hero() {
               })}
             </div>
           </div>
-          <div className={`flex justify-center lg:justify-end order-first lg:order-last ${mounted ? "animate-fade-in" : "opacity-0"}`}>
+          <div className={`flex justify-center lg:justify-end order-first lg:order-last -mt-6 ${mounted ? "animate-fade-in" : "opacity-0"}`}>
             <div className="relative">
               <div className="w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-2xl transform rotate-6"></div>
@@ -122,12 +129,12 @@ export default function Hero() {
         </div>
       </div>
       {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+      <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2">
         <button
           onClick={scrollToAbout}
-          className="text-muted-foreground hover:text-foreground transition-colors animate-bounce"
+          className="text-muted-foreground hover:text-foreground transition-colors animate-bounce p-2"
         >
-          <ArrowDown className="w-6 h-6" />
+          <ArrowDown className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
       </div>
       {/* Background decoration */}

@@ -64,10 +64,10 @@ export default function ProjectsSection() {
   }, [])
 
   return (
-    <section id="projects" className="py-16" ref={ref}>
+    <section id="projects" className="py-4" ref={ref}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
-          className={`text-center mb-12 transition-all duration-800 ${
+          className={`text-center mb-12 ${
             isVisible ? "animate-fade-in-up" : "opacity-0 translate-y-12"
           }`}
         >
@@ -79,11 +79,11 @@ export default function ProjectsSection() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 pb-12">
           {projects.map((project, index) => (
             <div
               key={project.id}
-              className={`${project.featured ? "md:col-span-2 lg:col-span-1" : ""} transition-all duration-600 ${
+              className={`${project.featured ? "md:col-span-2 lg:col-span-1" : ""} ${
                 isVisible
                   ? "animate-fade-in-up opacity-100 translate-y-0"
                   : "opacity-0 translate-y-12"
@@ -92,12 +92,12 @@ export default function ProjectsSection() {
               onMouseEnter={() => setHoveredProject(project.id)}
               onMouseLeave={() => setHoveredProject(null)}
             >
-              <Card className="group overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 glass">
+              <Card className="group overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-250 glass">
                 <div className="relative overflow-hidden">
                   <img
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-48 object-cover transition-transform duration-250 group-hover:scale-110"
                   />
                   <div
                     className={`absolute inset-0 bg-black/60 flex items-center justify-center space-x-4 transition-opacity duration-300 ${
@@ -175,15 +175,6 @@ export default function ProjectsSection() {
           ))}
         </div>
 
-        <div
-          className={`text-center mt-12 transition-all duration-800 delay-800 ${
-            isVisible ? "animate-fade-in-up opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
-          <Button variant="outline" size="lg" className="px-8 bg-transparent">
-            View All Projects
-          </Button>
-        </div>
       </div>
     </section>
   )

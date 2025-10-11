@@ -29,7 +29,7 @@ export default function BackToTop() {
 
   return (
     <div
-      className={`fixed bottom-8 right-8 z-50 transition-all duration-300 ${
+      className={`fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-50 transition-all duration-300 ${
         isVisible
           ? "opacity-100 scale-100 translate-y-0"
           : "opacity-0 scale-50 translate-y-4 pointer-events-none"

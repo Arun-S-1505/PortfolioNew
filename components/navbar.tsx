@@ -6,8 +6,8 @@ import { Menu, X, Download } from "lucide-react"
 
 const navItems = [
   { name: "About", href: "#about" },
-  { name: "Skills", href: "#skills" },
   { name: "Projects", href: "#projects" },
+  { name: "Skills", href: "#skills" },
   { name: "Contact", href: "#contact" },
 ]
 
@@ -26,7 +26,14 @@ export default function Navbar() {
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href)
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
+      const navbarHeight = 64 // h-16 = 64px
+      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+      const offsetPosition = elementPosition - navbarHeight
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      })
       setIsOpen(false)
     }
   }
@@ -37,13 +44,13 @@ export default function Navbar() {
         scrolled ? "bg-background/95 backdrop-blur-sm" : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto pl-4 sm:pl-6 lg:pl-8 pr-0">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
             <button
               onClick={() => scrollToSection("#hero")}
-              className="text-xl font-bold text-foreground hover:text-primary transition-colors"
+              className="text-2xl font-bold text-foreground hover:text-primary transition-colors"
             >
               {"Arun Saravanan S"
                 .split(" ")
@@ -54,27 +61,24 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <div className="ml-10 flex items-baseline space-x-8">
-              {navItems.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => scrollToSection(item.href)}
-                  className="text-muted-foreground hover:text-foreground px-3 py-2 text-sm font-medium transition-colors"
-                >
-                  {item.name}
-                </button>
-              ))}
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => window.open("/resume.pdf", "_blank")}
-                className="ml-4"
+          <div className="hidden md:flex items-center space-x-8">
+            {navItems.map((item) => (
+              <button
+                key={item.name}
+                onClick={() => scrollToSection(item.href)}
+                className="text-muted-foreground hover:text-foreground px-3 py-2 text-base font-medium transition-colors"
               >
-                <Download className="w-4 h-4 mr-2" />
-                Resume
-              </Button>
-            </div>
+                {item.name}
+              </button>
+            ))}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => window.open("/resume.pdf", "_blank")}
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Resume
+            </Button>
           </div>
 
           {/* Mobile menu button */}

@@ -37,6 +37,7 @@ const socialLinks = [
 export default function ContactSection() {
 	const ref = useRef(null)
 	const [isVisible, setIsVisible] = useState(false)
+	const [hasAnimated, setHasAnimated] = useState(false)
 	const [formData, setFormData] = useState({
 		name: "",
 		email: "",
@@ -48,11 +49,13 @@ export default function ContactSection() {
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			([entry]) => {
-				if (entry.isIntersecting) {
+				if (entry.isIntersecting && !hasAnimated) {
 					setIsVisible(true)
+					setHasAnimated(true)
+					observer.disconnect()
 				}
 			},
-			{ threshold: 0.1, rootMargin: "-100px" }
+			{ threshold: 0.15, rootMargin: "-50px" }
 		)
 
 		if (ref.current) {
@@ -60,7 +63,7 @@ export default function ContactSection() {
 		}
 
 		return () => observer.disconnect()
-	}, [])
+	}, [hasAnimated])
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault()
@@ -106,11 +109,11 @@ export default function ContactSection() {
 	}
 
 	return (
-		<section id="contact" className="py-16" ref={ref}>
+		<section id="contact" className="py-8" ref={ref}>
 			<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 				<div
-					className={`text-center mb-12 transition-all duration-800 ${
-						isVisible ? "animate-fade-in-up opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+					className={`text-center mb-8 ${
+						isVisible ? "animate-fade-in-up" : "opacity-0"
 					}`}
 				>
 					<h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
@@ -125,10 +128,10 @@ export default function ContactSection() {
 				<div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
 					{/* Contact Information */}
 					<div
-						className={`space-y-6 lg:space-y-8 transition-all duration-800 ${
+						className={`space-y-6 lg:space-y-8 ${
 							isVisible
-								? "animate-fade-in-left opacity-100 translate-x-0"
-								: "opacity-0 -translate-x-12"
+								? "animate-fade-in-left"
+								: "opacity-0"
 						}`}
 						style={{ animationDelay: isVisible ? "0.2s" : "0s" }}
 					>
@@ -147,10 +150,10 @@ export default function ContactSection() {
 								<a
 									key={index}
 									href={item.href}
-									className={`flex items-center p-3 sm:p-4 rounded-lg glass hover:bg-primary/5 transition-all duration-500 group ${
+									className={`flex items-center p-3 sm:p-4 rounded-lg glass hover:bg-primary/5 transition-all duration-250 group ${
 										isVisible
-											? "animate-fade-in-up opacity-100 translate-y-0"
-											: "opacity-0 translate-y-5"
+											? "animate-fade-in-up"
+											: "opacity-0"
 									}`}
 									style={{ animationDelay: isVisible ? `${0.4 + index * 0.1}s` : "0s" }}
 								>
@@ -168,10 +171,10 @@ export default function ContactSection() {
 						</div>
 
 						<div
-							className={`pt-8 transition-all duration-600 ${
+							className={`pt-8 ${
 								isVisible
-									? "animate-fade-in-up opacity-100 translate-y-0"
-									: "opacity-0 translate-y-5"
+									? "animate-fade-in-up"
+									: "opacity-0"
 							}`}
 							style={{ animationDelay: isVisible ? "0.8s" : "0s" }}
 						>
@@ -181,7 +184,7 @@ export default function ContactSection() {
 									<a
 										key={index}
 										href={social.href}
-										className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-primary to-blue-600 rounded-full flex items-center justify-center text-primary-foreground hover:shadow-lg transition-all duration-300 hover:scale-110 hover:-translate-y-1"
+										className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-primary to-blue-600 rounded-full flex items-center justify-center text-primary-foreground hover:shadow-lg transition-all duration-200 hover:scale-110 hover:-translate-y-1"
 									>
 										<social.icon size={18} className="sm:w-5 sm:h-5" />
 									</a>
@@ -192,10 +195,10 @@ export default function ContactSection() {
 
 					{/* Contact Form */}
 					<div
-						className={`transition-all duration-800 ${
+						className={`${
 							isVisible
-								? "animate-fade-in-right opacity-100 translate-x-0"
-								: "opacity-0 translate-x-12"
+								? "animate-fade-in-right"
+								: "opacity-0"
 						}`}
 						style={{ animationDelay: isVisible ? "0.4s" : "0s" }}
 					>
@@ -204,10 +207,10 @@ export default function ContactSection() {
 								<h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Send Message</h3>
 								<form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
 									<div
-										className={`transition-all duration-600 ${
+										className={`${
 											isVisible
-												? "animate-fade-in-up opacity-100 translate-y-0"
-												: "opacity-0 translate-y-5"
+												? "animate-fade-in-up"
+												: "opacity-0"
 										}`}
 										style={{ animationDelay: isVisible ? "0.6s" : "0s" }}
 									>
@@ -222,10 +225,10 @@ export default function ContactSection() {
 									</div>
 
 									<div
-										className={`transition-all duration-600 ${
+										className={`${
 											isVisible
-												? "animate-fade-in-up opacity-100 translate-y-0"
-												: "opacity-0 translate-y-5"
+												? "animate-fade-in-up"
+												: "opacity-0"
 										}`}
 										style={{ animationDelay: isVisible ? "0.7s" : "0s" }}
 									>
@@ -241,10 +244,10 @@ export default function ContactSection() {
 									</div>
 
 									<div
-										className={`transition-all duration-600 ${
+										className={`${
 											isVisible
-												? "animate-fade-in-up opacity-100 translate-y-0"
-												: "opacity-0 translate-y-5"
+												? "animate-fade-in-up"
+												: "opacity-0"
 										}`}
 										style={{ animationDelay: isVisible ? "0.8s" : "0s" }}
 									>
@@ -260,10 +263,10 @@ export default function ContactSection() {
 									</div>
 
 									<div
-										className={`transition-all duration-600 ${
+										className={`${
 											isVisible
-												? "animate-fade-in-up opacity-100 translate-y-0"
-												: "opacity-0 translate-y-5"
+												? "animate-fade-in-up"
+												: "opacity-0"
 										}`}
 										style={{ animationDelay: isVisible ? "0.9s" : "0s" }}
 									>

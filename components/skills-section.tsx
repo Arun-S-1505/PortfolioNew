@@ -29,10 +29,10 @@ const technologies = [
 function SkillItem({ skill, index, isInView }: { skill: any; index: number; isInView: boolean }) {
   return (
     <div
-      className={`p-3 sm:p-4 rounded-xl bg-gradient-to-r from-primary/10 to-blue-600/10 text-center cursor-pointer group border border-primary/20 transition-all duration-500 ${
+      className={`p-3 sm:p-4 rounded-xl bg-gradient-to-r from-primary/10 to-blue-600/10 text-center cursor-pointer group border border-primary/20 transition-all duration-250 ${
         isInView
-          ? "animate-fade-in-scale opacity-100 scale-100"
-          : "opacity-0 scale-50"
+          ? "animate-fade-in-scale"
+          : "opacity-0"
       } hover:scale-105 hover:-translate-y-1`}
       style={{ animationDelay: isInView ? `${index * 0.1}s` : "0s" }}
     >
@@ -45,15 +45,18 @@ function SkillItem({ skill, index, isInView }: { skill: any; index: number; isIn
 export default function SkillsSection() {
   const ref = useRef(null)
   const [isVisible, setIsVisible] = useState(false)
+  const [hasAnimated, setHasAnimated] = useState(false)
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry.isIntersecting && !hasAnimated) {
           setIsVisible(true)
+          setHasAnimated(true)
+          observer.disconnect()
         }
       },
-      { threshold: 0.1, rootMargin: "-100px" }
+      { threshold: 0.15, rootMargin: "-50px" }
     )
 
     if (ref.current) {
@@ -61,14 +64,14 @@ export default function SkillsSection() {
     }
 
     return () => observer.disconnect()
-  }, [])
+  }, [hasAnimated])
 
   return (
-    <section id="skills" className="py-16 bg-black" ref={ref}>
+    <section id="skills" className="py-8 bg-black" ref={ref}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
-          className={`text-center mb-12 transition-all duration-800 ${
-            isVisible ? "animate-fade-in-up opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+          className={`text-center mb-8 ${
+            isVisible ? "animate-fade-in-up" : "opacity-0"
           }`}
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent leading-relaxed pb-2">
@@ -82,7 +85,7 @@ export default function SkillsSection() {
         <div className="grid lg:grid-cols-2 gap-6 lg:gap-12">
           {/* Skills Progress Bars */}
           <div
-            className={`transition-all duration-800 ${
+            className={`${
               isVisible
                 ? "animate-fade-in-left opacity-100 translate-x-0"
                 : "opacity-0 -translate-x-12"
@@ -103,10 +106,10 @@ export default function SkillsSection() {
 
           {/* Technology Icons */}
           <div
-            className={`transition-all duration-800 ${
+            className={`${
               isVisible
-                ? "animate-fade-in-right opacity-100 translate-x-0"
-                : "opacity-0 translate-x-12"
+                ? "animate-fade-in-right"
+                : "opacity-0"
             }`}
             style={{ animationDelay: isVisible ? "0.4s" : "0s" }}
           >
@@ -117,10 +120,10 @@ export default function SkillsSection() {
                   {technologies.map((tech, index) => (
                     <div
                       key={tech.name}
-                      className={`p-3 sm:p-4 rounded-xl bg-gradient-to-r ${tech.color} text-white text-center cursor-pointer group transition-all duration-500 ${
+                      className={`p-3 sm:p-4 rounded-xl bg-gradient-to-r ${tech.color} text-white text-center cursor-pointer group transition-all duration-250 ${
                         isVisible
-                          ? "animate-fade-in-scale opacity-100 scale-100"
-                          : "opacity-0 scale-50"
+                          ? "animate-fade-in-scale"
+                          : "opacity-0"
                       } hover:scale-105 hover:-translate-y-1`}
                       style={{ animationDelay: isVisible ? `${0.6 + index * 0.1}s` : "0s" }}
                     >
