@@ -5,6 +5,7 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import Navbar from '@/components/navbar'
 import ThemeToggle from '@/components/theme-toggle'
+import LoadingScreen from '@/components/loading-screen'
 
 export const metadata: Metadata = {
   title: 'Arun Saravanan S - Portfolio',
@@ -24,8 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable}`}>
-          <Navbar />
-          <ThemeToggle />
+        <LoadingScreen />
+        <Navbar />
+        <ThemeToggle />
         {children}
         <Analytics />
       </body>
