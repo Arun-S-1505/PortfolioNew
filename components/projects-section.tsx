@@ -19,6 +19,17 @@ const projects = [
   },
   {
     id: 2,
+    title: "GlucoPredict",
+    description:
+      "A cutting-edge diabetes risk assessment platform built with React.js, featuring real-time AI-powered predictions using TensorFlow, seamless API integration with a Flask backend, and an intuitive health monitoring experience.",
+    image: "/Diabetes-Prediction.png",
+    technologies: ["React.js", "Flask", "TensorFlow", "scikit-learn", "python"],
+    liveUrl: "https://glucopredictapp.vercel.app/",
+    githubUrl: "https://github.com/Arun-S-1505/GlucoPredict.git",
+    featured: true,
+  },
+  {
+    id: 3,
     title: "Healthcare Booking System",
     description:
       "A comprehensive healthcare booking system with user authentication with JWT, appointment scheduling, and real-time notifications.",
@@ -27,17 +38,6 @@ const projects = [
     liveUrl: "https://innomaticsproject4.netlify.app/",
     githubUrl: "https://github.com/Arun-S-1505/InnomaticsProject4.git",
     featured: true,
-  },
-  {
-    id: 3,
-    title: "Portfolio Page",
-    description:
-      "Showcase of my work, skills, and projects with a clean and modern design, highlighting my journey as a developer through interactive layouts.",
-    image: "/Portfolio.png",
-    technologies: ["React.js", "Tailwind CSS", "EmailJS"],
-    liveUrl: "https://arunportfoliopage.netlify.app/",
-    githubUrl: "https://github.com/Arun-S-1505/Portfolio.git",
-    featured: false,
   },
 ]
 
