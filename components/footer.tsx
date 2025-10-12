@@ -25,7 +25,7 @@ export default function Footer() {
   }, [])
 
   return (
-    <footer className="py-6 border-t border-border/50 bg-background">
+    <footer className="py-8 border-t border-border/50 bg-background mt-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           ref={ref}
@@ -33,9 +33,9 @@ export default function Footer() {
             isVisible ? "animate-fade-in-up opacity-100 translate-y-0" : "opacity-0 translate-y-5"
           }`}
         >
-          <p className="text-muted-foreground flex items-center justify-center">
+          <p className="text-muted-foreground flex items-center justify-center gap-2">
             Made with{" "}
-            <span className="mx-2 text-red-500">
+            <span className="text-red-500">
               <Heart size={16} fill="currentColor" />
             </span>
             by Arun Saravanan S

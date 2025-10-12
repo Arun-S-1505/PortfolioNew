@@ -53,7 +53,7 @@ export default function ProjectsSection() {
           setIsVisible(true)
         }
       },
-      { threshold: 0.1, rootMargin: "-100px" }
+      { threshold: 0.01, rootMargin: "-150px" }
     )
 
     if (ref.current) {

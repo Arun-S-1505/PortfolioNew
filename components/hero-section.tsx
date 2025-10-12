@@ -26,7 +26,7 @@ export default function Hero() {
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.01, rootMargin: "-150px" }
     );
 
     const heroElement = document.getElementById('hero');

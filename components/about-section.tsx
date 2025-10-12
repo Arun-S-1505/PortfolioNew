@@ -46,7 +46,7 @@ export default function AboutSection() {
           observer.disconnect()
         }
       },
-      { threshold: 0.15, rootMargin: "-50px" }
+      { threshold: 0.01, rootMargin: "-150px" }
     )
 
     if (ref.current) {
