@@ -20,10 +20,8 @@ const technologies = [
   { name: "TypeScript", icon: <FileCode className="w-6 h-6 text-blue-600" /> },
   { name: "Tailwind", icon: <Palette className="w-6 h-6 text-cyan-500" /> },
   { name: "Node.js", icon: <Server className="w-6 h-6 text-green-600" /> },
-  //{ name: "Python", icon: "🐍" },
   { name: "SQL", icon: <Database className="w-6 h-6 text-orange-500" /> },
   { name: "MongoDB", icon: <Database className="w-6 h-6 text-green-500" /> },
-  //{ name: "PostgreSQL", icon: "🐘" },
 ]
 
 

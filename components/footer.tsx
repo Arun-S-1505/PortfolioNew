@@ -25,7 +25,7 @@ export default function Footer() {
   }, [])
 
   return (
-    <footer className="py-6 border-t border-border/50">
+    <footer className="py-6 border-t border-border/50 bg-background">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div
           ref={ref}

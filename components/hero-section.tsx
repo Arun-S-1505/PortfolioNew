@@ -8,9 +8,45 @@ import TypingEffect from "@/components/typing-effect";
 
 export default function Hero() {
   const [mounted, setMounted] = useState(false);
+  const [isHeroVisible, setIsHeroVisible] = useState(true);
+  const [isAboutVisible, setIsAboutVisible] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.target.id === 'hero') {
+            setIsHeroVisible(entry.isIntersecting);
+          } else if (entry.target.id === 'about') {
+            setIsAboutVisible(entry.isIntersecting);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const heroElement = document.getElementById('hero');
+    const aboutElement = document.getElementById('about');
+    
+    if (heroElement) {
+      observer.observe(heroElement);
+    }
+    if (aboutElement) {
+      observer.observe(aboutElement);
+    }
+
+    return () => {
+      if (heroElement) {
+        observer.unobserve(heroElement);
+      }
+      if (aboutElement) {
+        observer.unobserve(aboutElement);
+      }
+    };
   }, []);
 
   const scrollToAbout = () => {
@@ -36,7 +72,7 @@ export default function Hero() {
 
   return (
     <section id="hero" className="min-h-[calc(100vh-4rem)] flex items-center justify-center relative bg-background overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-4 sm:pt-3 sm:pb-6 lg:pt-4 lg:pb-8 relative z-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-16 sm:pt-3 sm:pb-20 lg:pt-4 lg:pb-8 relative z-10">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Content */}
           <div className={`space-y-8 ${mounted ? "animate-fade-in-up" : "opacity-0"}`}>
@@ -67,8 +103,8 @@ export default function Hero() {
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl leading-relaxed">
                 <span className="text-primary font-semibold">I create stunning, interactive</span>{" "}
-                 web experiences that blend beautiful design with cutting-edge technology.
-              Let's build something amazing together.
+                web experiences that blend beautiful design with cutting-edge technology.
+                Let's build something amazing together.
                 <span className="text-primary font-semibold"> Specializing in</span>{" "}
                 scalable applications and innovative solutions.
               </p>
@@ -125,7 +161,7 @@ export default function Hero() {
               })}
             </div>
           </div>
-          <div className={`flex justify-center lg:justify-end order-first lg:order-last -mt-6 ${mounted ? "animate-fade-in" : "opacity-0"}`}>
+          <div className={`flex justify-center lg:justify-end order-first lg:order-last mt-4 lg:-mt-6 ${mounted ? "animate-fade-in" : "opacity-0"}`}>
             <div className="relative">
               <div className="w-64 h-64 sm:w-80 sm:h-80 lg:w-96 lg:h-96 relative group">
                 {/* Animated rings */}
@@ -149,7 +185,7 @@ export default function Hero() {
         </div>
       </div>
       {/* Scroll indicator */}
-      <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-10">
+      <div className={`fixed bottom-4 sm:absolute sm:bottom-8 left-1/2 transform -translate-x-1/2 z-10 transition-opacity duration-300 ${isHeroVisible && !isAboutVisible ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
         <button
           onClick={scrollToAbout}
           className="text-muted-foreground hover:text-primary transition-colors animate-bounce p-2 rounded-full bg-muted/50 backdrop-blur-sm border border-border hover:border-primary"

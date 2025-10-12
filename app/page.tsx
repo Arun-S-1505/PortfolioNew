@@ -24,7 +24,7 @@ export default function Portfolio() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <div className="pt-16" style={{ width: '100vw', overflowX: 'hidden', position: 'relative' }}>
+      <div className="pt-16 pb-16 sm:pb-0" style={{ width: '100vw', overflowX: 'hidden', position: 'relative' }}>
         <main>
           <Hero />
           <AboutSection />

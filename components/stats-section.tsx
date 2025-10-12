@@ -1,7 +1,9 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import { useRef, useState, useEffect, useCallback } from "react"
 import { Card, CardContent } from "@/components/ui/card"
+import GitHubCalendar from "react-github-calendar"
+import { motion } from "framer-motion"
 import {
   Github,
   GitFork,
@@ -90,6 +92,7 @@ export default function StatsSection() {
   const [stats, setStats] = useState<GitHubStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [totalCount, setTotalCount] = useState(0)
 
   // Fetch GitHub stats
   useEffect(() => {
@@ -136,6 +139,34 @@ export default function StatsSection() {
 
     return () => observer.disconnect()
   }, [hasAnimated])
+
+  const processContributions = useCallback((contributions: any[]) => {
+    setTimeout(() => {
+      const total = contributions
+        .map((el) => el.count)
+        .reduce((acc, curr) => acc + curr, 0)
+      setTotalCount(total)
+    }, 0)
+
+    return contributions.slice(91, 365)
+  }, [])
+
+  const theme = {
+    light: [
+      "#ebedf0",  // Level 0 - light gray (no contributions)
+      "#d6f4d6",  // Level 1 - very dim green
+      "#9fdf9f",  // Level 2 - dim green
+      "#6bb96b",  // Level 3 - medium green
+      "#2d8b2d"   // Level 4 - bright green (most contributions)
+    ],
+    dark: [
+      "#161b22",  // Level 0 - dark background (no contributions)
+      "#1a4d3a",  // Level 1 - very dim green
+      "#2d6b4f",  // Level 2 - dim green
+      "#4a9c6e",  // Level 3 - medium green
+      "#6fbf73"   // Level 4 - bright green (most contributions)
+    ]
+  }
 
   if (loading) {
     return (
@@ -200,21 +231,21 @@ export default function StatsSection() {
                 {primaryStatsConfig.map((config, index) => (
                   <div
                     key={index}
-                    className={`text-center p-4 rounded-xl glass border border-primary/10 group hover:border-primary/30 transition-all duration-300 ${
+                    className={`text-center p-3 sm:p-4 rounded-xl glass border border-primary/10 group hover:border-primary/30 transition-all duration-300 ${
                       isVisible ? "animate-fade-in-scale" : "opacity-0"
                     }`}
                     style={{ animationDelay: isVisible ? `${0.3 + index * 0.1}s` : "0s" }}
                   >
-                    <div className="mb-3 flex justify-center">
-                      <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
-                        <config.icon className="w-6 h-6 text-primary" />
+                    <div className="mb-2 sm:mb-3 flex justify-center">
+                      <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300">
+                        <config.icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
                       </div>
                     </div>
-                    <div className="text-3xl sm:text-4xl font-bold mb-1 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
+                    <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1 bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent leading-tight">
                       {stats.primaryStats[config.key]}
                     </div>
-                    <div className="text-sm font-medium mb-1">{config.label}</div>
-                    <div className="text-xs text-muted-foreground">{config.description}</div>
+                    <div className="text-xs sm:text-sm font-medium mb-1 px-1">{config.label}</div>
+                    <div className="text-xs text-muted-foreground px-1 leading-tight">{config.description}</div>
                   </div>
                 ))}
               </div>
@@ -224,39 +255,41 @@ export default function StatsSection() {
                 {additionalStatsConfig.map((config, index) => (
                   <div
                     key={index}
-                    className={`flex items-center gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-all duration-250 ${
+                    className={`text-center sm:flex sm:items-center sm:gap-3 p-3 rounded-lg bg-muted/30 hover:bg-muted/50 transition-all duration-250 ${
                       isVisible ? "animate-fade-in-scale" : "opacity-0"
                     }`}
                     style={{ animationDelay: isVisible ? `${0.6 + index * 0.05}s` : "0s" }}
                   >
-                    <config.icon className="w-5 h-5 text-primary flex-shrink-0" />
-                    <div className="min-w-0">
+                    <div className="flex justify-center sm:flex-shrink-0 mb-2 sm:mb-0">
+                      <config.icon className="w-5 h-5 text-primary" />
+                    </div>
+                    <div className="sm:min-w-0 sm:flex-1">
                       <div className="text-lg font-bold">{stats.additionalStats[config.key]}</div>
-                      <div className="text-xs text-muted-foreground truncate">{config.label}</div>
+                      <div className="text-xs text-muted-foreground sm:truncate">{config.label}</div>
                     </div>
                   </div>
                 ))}
               </div>
 
               {/* Contribution Streak */}
-              <div className="grid grid-cols-3 gap-4 sm:gap-6 mt-6">
-                <div className="text-center p-4 rounded-lg bg-gradient-to-br from-green-500/10 to-green-700/10 border border-green-500/20">
-                  <div className="text-2xl sm:text-3xl font-bold text-green-500 mb-1">
+              <div className="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6 mt-6">
+                <div className="text-center p-2 sm:p-4 rounded-lg bg-gradient-to-br from-green-500/10 to-green-700/10 border border-green-500/20">
+                  <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-green-500 mb-1 leading-tight">
                     {stats.contributionData.totalContributions}
                   </div>
-                  <div className="text-xs sm:text-sm text-muted-foreground">Total Contributions</div>
+                  <div className="text-xs text-muted-foreground leading-tight">Total Contributions</div>
                 </div>
-                <div className="text-center p-4 rounded-lg bg-gradient-to-br from-blue-500/10 to-blue-700/10 border border-blue-500/20">
-                  <div className="text-2xl sm:text-3xl font-bold text-blue-500 mb-1">
+                <div className="text-center p-2 sm:p-4 rounded-lg bg-gradient-to-br from-blue-500/10 to-blue-700/10 border border-blue-500/20">
+                  <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-blue-500 mb-1 leading-tight">
                     {stats.contributionData.currentStreak}
                   </div>
-                  <div className="text-xs sm:text-sm text-muted-foreground">Day Streak</div>
+                  <div className="text-xs text-muted-foreground leading-tight">Day Streak</div>
                 </div>
-                <div className="text-center p-4 rounded-lg bg-gradient-to-br from-purple-500/10 to-purple-700/10 border border-purple-500/20">
-                  <div className="text-2xl sm:text-3xl font-bold text-purple-500 mb-1">
+                <div className="text-center p-2 sm:p-4 rounded-lg bg-gradient-to-br from-purple-500/10 to-purple-700/10 border border-purple-500/20">
+                  <div className="text-lg sm:text-2xl lg:text-3xl font-bold text-purple-500 mb-1 leading-tight">
                     {stats.contributionData.longestStreak}
                   </div>
-                  <div className="text-xs sm:text-sm text-muted-foreground">Longest Streak</div>
+                  <div className="text-xs text-muted-foreground leading-tight">Longest Streak</div>
                 </div>
               </div>
 
@@ -277,55 +310,53 @@ export default function StatsSection() {
         </div>
 
         {/* GitHub Contribution Calendar */}
-        <div
-          className={`max-w-6xl mx-auto ${
-            isVisible ? "animate-fade-in-up" : "opacity-0"
-          }`}
-          style={{ animationDelay: isVisible ? "0.8s" : "0s" }}
+        <motion.div
+          initial={{ opacity: 0, filter: "blur(10px)", y: 10 }}
+          whileInView={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+          transition={{
+            duration: 0.3,
+            delay: 0.1,
+            ease: "easeInOut",
+          }}
+          className="w-full lg:max-w-[60%] md:max-w-[60%] sm:max-w-[80%] px-4 sm:px-6 py-8 mx-auto"
         >
-          <Card className="glass border-primary/20 overflow-hidden">
-            <CardContent className="p-6 sm:p-8">
-              <div className="flex items-center gap-2 mb-6">
-                <Calendar className="w-6 h-6 text-primary" />
-                <h3 className="text-xl sm:text-2xl font-bold">Contribution Activity</h3>
-              </div>
+          <motion.h4
+            className="text-2xl sm:text-3xl font-bold mb-2 pb-4"
+          >
+            GitHub Contributions
+          </motion.h4>
 
-              {/* Weekly Activity Chart */}
-              <div className="space-y-4 mb-6">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">This Week</span>
-                  <span className="text-sm font-medium">
-                    {stats.contributionData.weeklyActivity.reduce((sum, day) => sum + day.commits, 0)} commits
-                  </span>
-                </div>
-              </div>
+          <motion.div
+            className="bg-card p-6 flex flex-col justify-self-center rounded-xl shadow-md border overflow-x-auto"
+          >
+            <div className="min-w-max">
+              <GitHubCalendar
+                username={stats?.username || "Arun-S-1505"}
+                transformData={processContributions}
+                totalCount={totalCount}
+                theme={theme}
+                blockSize={14}
+                blockMargin={4}
+                fontSize={12}
+                blockRadius={3}
+              />
+            </div>
+          </motion.div>
 
-              {/* GitHub Calendar Embed */}
-              <div className="mt-8 p-4 rounded-lg glass">
-                <div className="text-center">
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Full contribution graph available on GitHub
-                  </p>
-                  <div className="flex justify-center">
-                    <img
-                      src={`https://ghchart.rshah.org/${stats.username}`}
-                      alt="GitHub Contribution Graph"
-                      className="rounded-lg opacity-95 hover:opacity-100 transition-opacity"
-                      style={{ 
-                        width: '100%', 
-                        maxWidth: '800px', 
-                        height: 'auto',
-                        minHeight: '120px'
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-
-
-            </CardContent>
-          </Card>
-        </div>
+          <motion.div
+            className="flex justify-center mt-5"
+          >
+            <a
+              href={`https://github.com/${stats?.username || "Arun-S-1505"}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors group"
+            >
+              <span className="font-medium">GitHub</span>
+              <Github className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </a>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   )
