@@ -7,7 +7,7 @@ import { Award, Briefcase, Zap } from "lucide-react"
 const timelineData = [
   {
     year: "2025",
-    title: "Full stack Developer Intern - Current",
+    title: "Full stack Developer Intern",
     company: "Zeex AI",
     description: "Contributing to the development of AI-driven web platforms using React, Next.js, and TypeScript to deliver high-performance user experiences.",
     icon: Award,
@@ -15,7 +15,7 @@ const timelineData = [
   },
   {
     year: "2025",
-    title: "Club Member - Current",
+    title: "Club Member",
     company: "Codezilla",
     description: "Collaborating with peers in Mozilla's Codezilla tech community to build innovative web projects and enhance open-source development skills.",
     icon: Zap,
