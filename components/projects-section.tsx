@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import { useRef, useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
@@ -8,13 +8,13 @@ import { ExternalLink, Github, Eye } from "lucide-react"
 const projects = [
   {
     id: 1,
-    title: "E-Commerce Platform",
+    title: "ASAP - Automated Procurement",
     description:
-      "A modern e-commerce platform built with React.js, featuring API fetched items from Fake Store API, user authentication, and a seamless shopping experience.",
-    image: "/modern-ecommerce-interface.png",
-    technologies: ["React.js", "TypeScript", "Node.js", "MongoDB"],
-    liveUrl: "https://ecommerce-frontend-ps6h8rbd2-arun-saravanans-projects.vercel.app/",
-    githubUrl: "https://github.com/Arun-S-1505/Ecommerce.git",
+      "An intelligent middleware system that automates procurement approval workflows by integrating with SAP ERP systems. Uses risk-based scoring to auto-approve low-risk purchase requisitions while flagging high-risk ones for manual review.",
+    image: "/ASAP-Procurement.jpg",
+    technologies: ["Kotlin", "FastAPI", "MySQL", "SQLAlchemy", "JWT"],
+    liveUrl: "https://github.com/Arun-S-1505/ASAP-Agentic-System-for-Automated-Procurement",
+    githubUrl: "https://github.com/Arun-S-1505/ASAP-Agentic-System-for-Automated-Procurement.git",
     featured: true,
   },
   {
@@ -30,6 +30,28 @@ const projects = [
   },
   {
     id: 3,
+    title: "MediSeal",
+    description:
+      "A blockchain-based pharmaceutical supply chain management system enhanced with AI for intelligent monitoring, predictive analytics, and automated quality assurance. Features Ethereum smart contracts, IPFS storage, and 4 specialized ML models.",
+    image: "/MediSeal-Dashboard.jpg",
+    technologies: ["Next.js", "Ethereum", "IPFS", "Express.js", "ML"],
+    liveUrl: "https://github.com/Iniyanandhitha/MediSeal",
+    githubUrl: "https://github.com/Iniyanandhitha/MediSeal.git",
+    featured: true,
+  },
+  {
+    id: 4,
+    title: "E-Commerce Platform",
+    description:
+      "A modern e-commerce platform built with React.js, featuring API fetched items from Fake Store API, user authentication, and a seamless shopping experience.",
+    image: "/modern-ecommerce-interface.png",
+    technologies: ["React.js", "TypeScript", "Node.js", "MongoDB"],
+    liveUrl: "https://ecommerce-frontend-ps6h8rbd2-arun-saravanans-projects.vercel.app/",
+    githubUrl: "https://github.com/Arun-S-1505/Ecommerce.git",
+    featured: true,
+  },
+  {
+    id: 5,
     title: "Healthcare Booking System",
     description:
       "A comprehensive healthcare booking system with user authentication with JWT, appointment scheduling, and real-time notifications.",
